@@ -1,12 +1,11 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-
+#include "Renderer.h"
 #include <iostream>
+//#include "renderer.cpp"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
-void startup();
-//GLuint compileShaders();
 
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
@@ -18,8 +17,8 @@ int main()
 
     //Give GLFW hints about what version of opengl we are using
     //I'm using 3.3 
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
     //Using core profile
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
@@ -51,7 +50,9 @@ int main()
         return -1;
     }
 
-    startup();
+    //initialize renderer
+    Renderer* renderer = new Renderer();
+
 
     //while the window isnt closed
     while (!glfwWindowShouldClose(window))
@@ -64,7 +65,9 @@ int main()
         //clean back buffer
         glClear(GL_COLOR_BUFFER_BIT);
 
+        //render 
 
+        renderer->render();
         
 
 
@@ -74,6 +77,10 @@ int main()
         //take care of all opengl events
         glfwPollEvents();
     }
+
+    //calling renderer's deconstructor
+    delete renderer;
+
 }
 
 void processInput(GLFWwindow* window)
@@ -85,9 +92,4 @@ void processInput(GLFWwindow* window)
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
     glViewport(0, 0, width, height);
-}
-
-void startup() 
-{
-    //GLuint render_program = compileShaders();
 }
