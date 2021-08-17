@@ -53,7 +53,6 @@ int main()
     //initialize renderer
     Renderer* renderer = new Renderer();
 
-
     //while the window isnt closed
     while (!glfwWindowShouldClose(window))
     {

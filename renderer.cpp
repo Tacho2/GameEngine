@@ -2,23 +2,76 @@
 #include <iostream>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include "vmath.h"
 
 GLuint compile_shaders();
 
 Renderer::Renderer() 
 {
+	matrixMaker = new vmath();
 	//create rendering program
 	rendering_program = compile_shaders();
 	//create objects
 	glCreateVertexArrays(1, &vertex_array_object);
 	glBindVertexArray(vertex_array_object);
-	glPointSize(40.0f);
+	static const GLfloat cubePositions[] = {
+	-1.0f,-1.0f,-1.0f, // triangle 1 : begin
+	-1.0f,-1.0f, 1.0f,
+	-1.0f, 1.0f, 1.0f, // triangle 1 : end
+	1.0f, 1.0f,-1.0f, // triangle 2 : begin
+	-1.0f,-1.0f,-1.0f,
+	-1.0f, 1.0f,-1.0f, // triangle 2 : end
+	1.0f,-1.0f, 1.0f,
+	-1.0f,-1.0f,-1.0f,
+	1.0f,-1.0f,-1.0f,
+	1.0f, 1.0f,-1.0f,
+	1.0f,-1.0f,-1.0f,
+	-1.0f,-1.0f,-1.0f,
+	-1.0f,-1.0f,-1.0f,
+	-1.0f, 1.0f, 1.0f,
+	-1.0f, 1.0f,-1.0f,
+	1.0f,-1.0f, 1.0f,
+	-1.0f,-1.0f, 1.0f,
+	-1.0f,-1.0f,-1.0f,
+	-1.0f, 1.0f, 1.0f,
+	-1.0f,-1.0f, 1.0f,
+	1.0f,-1.0f, 1.0f,
+	1.0f, 1.0f, 1.0f,
+	1.0f,-1.0f,-1.0f,
+	1.0f, 1.0f,-1.0f,
+	1.0f,-1.0f,-1.0f,
+	1.0f, 1.0f, 1.0f,
+	1.0f,-1.0f, 1.0f,
+	1.0f, 1.0f, 1.0f,
+	1.0f, 1.0f,-1.0f,
+	-1.0f, 1.0f,-1.0f,
+	1.0f, 1.0f, 1.0f,
+	-1.0f, 1.0f,-1.0f,
+	-1.0f, 1.0f, 1.0f,
+	1.0f, 1.0f, 1.0f,
+	-1.0f, 1.0f, 1.0f,
+	1.0f,-1.0f, 1.0f
+	};
+
+	GLuint buffer;
+	glGenBuffers(1, &buffer);
+	glBindBuffer(GL_ARRAY_BUFFER, buffer);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(cubePositions), cubePositions, GL_STATIC_DRAW);
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+	glEnableVertexAttribArray(0);
+
+	matrixMaker->buildProjectionMatrix();
 }
 
 void Renderer::render() 
 {
 	glUseProgram(rendering_program);
+
+	//build model view matrix
+	matrixMaker->buildViewMatrix();
 	glDrawArrays(GL_TRIANGLES, 0, 3);
+
 }
 
 Renderer::~Renderer()
@@ -26,6 +79,7 @@ Renderer::~Renderer()
 	glDeleteVertexArrays(1, &vertex_array_object);
 	glDeleteProgram(rendering_program);
 	glDeleteVertexArrays(1, &vertex_array_object);
+	delete matrixMaker;
 }
 
 GLuint compile_shaders() 
@@ -39,13 +93,16 @@ GLuint compile_shaders()
 	{
 		"#version 450 core								\n"
 		"												\n"
+		"uniform float projectionMatrix;					\n"
+		"												\n"
+		"												\n"
 		"void main(void)								\n"
 		"{												\n"
-		"	vec4 vertices[3] = vec4[3](vec4( 0.5, -0.5, 0.5, 1.0), \n"
+		"	vec4 vertices[3] = vec4[3](vec4( 0.5 + projectionMatrix, -0.5, 0.5, 1.0), \n"
 		"	vec4(-0.5, -0.5, 0.5, 1.0),				\n"
 		"	vec4(0.5, 0.25, 0.5, 1.0));				\n"			
 		"												\n"
-		"	gl_Position = vertices[gl_VertexID];	\n"
+		"	gl_Position = vertices[gl_VertexID] -   vec4(projectionMatrix, 0, 0, 0);	\n"
 		"}												\n"
 
 	};
@@ -83,6 +140,9 @@ GLuint compile_shaders()
 	glAttachShader(program, fragment_shader);
 	//links the shaders together i think, or maybe it links the program to the gpu.
 	glLinkProgram(program);
+
+	GLuint projLocation = glGetUniformLocation(program, "projectionMatrix");
+	glUniform1f(projLocation, -0.25f);
 
 	//the shaders are on the program now and now we cleanup the initial instantiations because we have the copys on teh program
 	glDeleteShader(vertex_shader);
