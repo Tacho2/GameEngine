@@ -2,7 +2,6 @@
 #include <GLFW/glfw3.h>
 #include "Renderer.h"
 #include <iostream>
-//#include "renderer.cpp"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
@@ -53,20 +52,13 @@ int main()
     //initialize renderer
     Renderer* renderer = new Renderer();
 
-
     //while the window isnt closed
     while (!glfwWindowShouldClose(window))
     {
 
         processInput(window);
 
-        //specify color of background
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-        //clean back buffer
-        glClear(GL_COLOR_BUFFER_BIT);
-
         //render 
-
         renderer->render();
         
 
