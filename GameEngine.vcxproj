@@ -145,18 +145,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="C:\Users\Cameron Egbert\Downloads\vmath\vmath-0.13\src\vmath.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="matrixMaker.cpp" />
     <ClCompile Include="renderer.cpp" />
-    <ClCompile Include="vmath.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Matrix.h" />
-    <ClInclude Include="Quaternion.h" />
+    <ClInclude Include="C:\Users\Cameron Egbert\Downloads\vmath\vmath-0.13\src\vmath.h" />
+    <ClInclude Include="matrixMaker.h" />
     <ClInclude Include="Renderer.h" />
-    <ClInclude Include="vec3.h" />
-    <ClInclude Include="vec4.h" />
-    <ClInclude Include="vmath.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

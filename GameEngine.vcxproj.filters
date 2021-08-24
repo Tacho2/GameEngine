@@ -24,7 +24,10 @@
     <ClCompile Include="renderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="vmath.cpp">
+    <ClCompile Include="C:\Users\Cameron Egbert\Downloads\vmath\vmath-0.13\src\vmath.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="matrixMaker.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -32,19 +35,10 @@
     <ClInclude Include="Renderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="vmath.h">
+    <ClInclude Include="C:\Users\Cameron Egbert\Downloads\vmath\vmath-0.13\src\vmath.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="vec3.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="vec4.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Matrix.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Quaternion.h">
+    <ClInclude Include="matrixMaker.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
